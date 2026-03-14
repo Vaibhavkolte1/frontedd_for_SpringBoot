@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { FaUser, FaMapMarkerAlt, FaCreditCard, FaClock } from 'react-icons/fa'
 
 const OrderDetails = () => {
     const { orderId } = useParams();
     const [order, setOrder] = useState();
+    const [cardNumber, setCardNumber] = useState("");
     const [paymentMethod, setPaymentMethod] = useState();
+    const [refresh, setRefresh] = useState(false);
+
+    const navigate = useNavigate();
 
     const userGet = useSelector((state) => state.user.user);
 
@@ -20,17 +25,21 @@ const OrderDetails = () => {
         }
 
         getOrderDetails();
-    }, [])
+    }, [refresh])
 
     const handlePayment = () => {
-        if (!paymentMethod) {
-            console.warn("No payment method selected");
+        if (!paymentMethod || paymentMethod.trim() === "" &&  cardNumber.trim() === "") {
+            alert("No payment method selected or card details provided.");
             return;
         }
 
         api.post("/order/payment", { orderId: order?.id, paymentMethod: paymentMethod })
             .then(res => {
                 console.log("Payment processed:", res.data);
+                alert("Payment successful!");
+                setTimeout(() => {
+                    setRefresh(!refresh);
+                }, 2000);
             })
             .catch(e => {
                 console.error("Error processing payment:", e);
@@ -67,7 +76,7 @@ const OrderDetails = () => {
                     <div className="p-8">
                         {/* Main Price Display */}
                         <div className="text-center mb-8">
-                            <p className="text-4xl font-black text-slate-900">${order?.totalAmount}</p>
+                            <p className="text-4xl font-black text-slate-900">₹{order?.totalAmount}</p>
                             <p className="text-sm font-bold text-blue-600 mt-1">Quantity: {order?.quantity}</p>
                         </div>
 
@@ -128,6 +137,7 @@ const OrderDetails = () => {
                                                     <option value="creditCard">💳 Credit Card</option>
                                                     <option value="paypal">🅿️ PayPal</option>
                                                     <option value="stripe">🏁 Stripe</option>
+                                                    <option value="cod" disabled={true}>💵 Cash on Delivery</option>
                                                 </select>
                                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -149,6 +159,8 @@ const OrderDetails = () => {
                                                 <input
                                                     type="text"
                                                     placeholder='0000 0000 0000 0000'
+                                                    value={cardNumber}
+                                                    onChange={(e) => setCardNumber(e.target.value)}
                                                     className="w-full bg-slate-50 border border-slate-100 text-slate-900 text-sm rounded-2xl p-4 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-300 font-mono tracking-wider"
                                                 />
                                             </div>
@@ -164,7 +176,7 @@ const OrderDetails = () => {
                                         >
                                             <span>Pay Now</span>
                                             <span className="h-4 w-[1px] bg-blue-400/50"></span>
-                                            <span>${order?.totalAmount}</span>
+                                            <span>₹{order?.totalAmount}</span>
                                         </button>
                                     </div>
                                 )}

@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const DEFAULT_API_URL = "https://e-commarce-backend-1.onrender.com/api";
+// const DEFAULT_API_URL = "https://quickmart-hvyq.onrender.com/api";
 
-// const DEFAULT_API_URL = "http://localhost:8080/api"
+const DEFAULT_API_URL = "http://localhost:8080/api"
 const BASE_URL = import.meta.env.DEV
     ? '/api'
     : (import.meta.env.VITE_API_URL || DEFAULT_API_URL);

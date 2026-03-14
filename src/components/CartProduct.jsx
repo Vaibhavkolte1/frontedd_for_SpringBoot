@@ -129,10 +129,10 @@ const CartProduct = ({ productId, qty = 1, setRefresh }) => {
                     {/* Right Inside: Price */}
                     <div className="text-right">
                         <p className="text-lg font-black text-blue-600">
-                            ${(pDetail.price * qty).toFixed(2)}
+                            ₹{(pDetail.price * qty).toFixed(2)}
                         </p>
                         <p className="text-[10px] text-slate-400 font-medium">
-                            ${pDetail.price}/ea
+                            ₹{pDetail.price}/ea
                         </p>
                     </div>
                 </div>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowLeft } from "react-icons/fa";
 import Toast from '../components/Toast';
 import { FaShoppingBag, FaStar, FaBox, FaChartLine, FaRegCommentDots } from "react-icons/fa";
 
@@ -12,6 +14,8 @@ const ProductPage = () => {
   const [rating, setRating] = useState(5);
   const [refresh, setRefresh] = useState(false);
   const [toast, setToast] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -63,6 +67,13 @@ const ProductPage = () => {
       <main className="flex-1 pt-24 pb-32 px-4 flex items-center justify-center">
         <div className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-xl shadow-slate-200/60 p-6 sm:p-10 flex flex-col gap-8 border border-slate-100">
 
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-slate-400 w-fit hover:text-blue-600 transition-colors mb-2 text-sm font-bold"
+          >
+            <FaArrowLeft /> Back
+          </button>
+
           {/* 1. PRODUCT IMAGE: Large and Rounded */}
           <div className="relative group overflow-hidden rounded-[2rem] bg-slate-50">
             <img
@@ -89,7 +100,7 @@ const ProductPage = () => {
               </div>
             </div>
             <p className="text-3xl font-black text-slate-900">
-              ${product.price}
+              ₹{product.price}
             </p>
           </div>
 
@@ -160,7 +171,7 @@ const ProductPage = () => {
           </div>
         </div>
       </main>
-              
+
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>
   );

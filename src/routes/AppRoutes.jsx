@@ -14,6 +14,8 @@ import CreateProduct from '../pages/CreateProduct.jsx'
 import AdminPanel from '../pages/AdminPanel.jsx'
 import ProductManage from '../pages/ProductManage.jsx'
 import ForgotPassword from '../pages/ForgotPassword.jsx'
+import CustomerCare from '../pages/CustomerCare.jsx'
+import Notification from '../pages/Notification.jsx'
 
 const AppRoutes = () => {
   return (
@@ -33,6 +35,8 @@ const AppRoutes = () => {
         <Route path="/productmanage" element={<ProductManage />} />
         <Route path="/adminpanel" element={<AdminPanel />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/customercare" element={<CustomerCare />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
     </BrowserRouter>
   )

@@ -87,8 +87,8 @@ const Profile = () => {
                     <h3 className="px-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Account Settings</h3>
                     <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
                         <MenuLink icon={<FaStore className="text-blue-500" />} label="Become a Seller" onClick={() => navigate('/registerseller')} />
-                        <MenuLink icon={<IoNotifications className="text-orange-500" />} label="Notifications" />
-                        <MenuLink icon={<MdSupportAgent className="text-green-500" />} label="24x7 Customer Care" />
+                        <MenuLink icon={<IoNotifications className="text-orange-500" />} label="Notifications" onClick={() => navigate('/notification')} />
+                        <MenuLink icon={<MdSupportAgent className="text-green-500" />} label="24x7 Customer Care" onClick={() => navigate('/customercare')} />
                         <MenuLink icon={<FaBullhorn className="text-purple-500" />} label="Advertise with Us" last />
                     </div>
                 </div>

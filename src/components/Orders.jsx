@@ -95,7 +95,7 @@ const Orders = ({ productId, qty = 1, orderId, setRefresh }) => {
 			>
 				<span className="text-[10px] font-bold text-slate-400 uppercase">Qty: {qty}</span>
 				<span className="text-base font-black text-slate-900">
-					${pDetail.price ? (pDetail.price * qty).toLocaleString() : 0}
+					₹{pDetail.price ? (pDetail.price * qty).toLocaleString() : 0}
 				</span>
 			</div>
 

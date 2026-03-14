@@ -76,7 +76,7 @@ const ProductHandleAdmin = ({ id, name, image, price, stock, sold, setRefresh })
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Price</span>
                         </div>
                         <span className="text-sm font-black text-blue-600">
-                            ${price.toLocaleString()}
+                            ₹{price.toLocaleString()}
                         </span>
                     </div>
 
