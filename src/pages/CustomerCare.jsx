@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    Mail,
+    Github,
     Phone,
     MessageSquare,
     Search,
@@ -35,9 +35,9 @@ const contactMethods = [
         desc: "Chat instantly with our support team",
     },
     {
-        icon: <Mail size={26} />,
-        title: "Email Support",
-        desc: "We respond within 24 hours",
+        icon: <Github size={26} />,
+        title: "GitHub visit",
+        desc: "visit our GitHub repository for issues and discussions",
     },
     {
         icon: <Phone size={26} />,
@@ -108,10 +108,10 @@ const CustomerCare = () => {
 
                             <p className="text-slate-500 mb-6">{method.desc}</p>
 
-                            <div className="flex items-center font-semibold text-blue-600">
+                            <a className="flex items-center font-semibold text-blue-600" href="https://github.com/Vaibhavkolte1">
                                 Get Started
                                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition" />
-                            </div>
+                            </a>
                         </motion.div>
                     ))}
                 </div>
