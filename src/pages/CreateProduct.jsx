@@ -11,17 +11,18 @@ import {
 } from "react-icons/fa";
 
 const CreateProduct = () => {
+    const navigate = useNavigate();
+
     const [productDtls, setProductDtls] = useState({
         name: "",
         description: "",
         price: "",
         stock: "",
-        image: "",
     });
 
-    const navigate = useNavigate();
+    const [imageFile, setImageFile] = useState(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (
@@ -29,29 +30,38 @@ const CreateProduct = () => {
             !productDtls.description ||
             !productDtls.price ||
             !productDtls.stock ||
-            !productDtls.image
+            !imageFile
         ) {
-            alert("Please fill in all required fields.");
+            alert("Please fill all fields and select an image.");
             return;
         }
 
-        api
-            .post("/seller/create-product", {
-                name: productDtls.name,
-                description: productDtls.description,
-                price: Number(productDtls.price),
-                stock: Number(productDtls.stock),
-                image: productDtls.image,
-            })
-            .then((response) => {
-                console.log("Product created:", response.data);
-                alert("Product created successfully!");
-                navigate("/productmanage");
-            })
-            .catch((error) => {
-                console.error("Error creating product:", error);
-                alert("Failed to create product.");
-            });
+        const formData = new FormData();
+        formData.append("name", productDtls.name);
+        formData.append("description", productDtls.description);
+        formData.append("price", productDtls.price);
+        formData.append("stock", productDtls.stock);
+        formData.append("image", imageFile);
+
+        try {
+            const response = await api.post(
+                "/seller/create-product",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            console.log(response.data);
+            alert("Product created successfully!");
+            navigate("/productmanage");
+
+        } catch (error) {
+            console.error(error);
+            alert("Failed to create product.");
+        }
     };
 
     return (
@@ -86,7 +96,7 @@ const CreateProduct = () => {
                                 <FaBox className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                                 <Input
                                     type="text"
-                                    placeholder="e.g. Premium Wireless Headphones"
+                                    placeholder="Premium Wireless Headphones"
                                     value={productDtls.name}
                                     onChange={(e) =>
                                         setProductDtls({ ...productDtls, name: e.target.value })
@@ -102,7 +112,7 @@ const CreateProduct = () => {
                                 <FaParagraph className="absolute left-4 top-4 text-slate-300" />
                                 <textarea
                                     rows="3"
-                                    placeholder="Describe what makes this product special..."
+                                    placeholder="Describe product..."
                                     className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-blue-50 focus:border-blue-400 transition-all outline-none text-slate-700 font-medium resize-none"
                                     value={productDtls.description}
                                     onChange={(e) =>
@@ -124,7 +134,7 @@ const CreateProduct = () => {
                                     <FaDollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                                     <Input
                                         type="number"
-                                        placeholder="0.00"
+                                        placeholder="0"
                                         value={productDtls.price}
                                         onChange={(e) =>
                                             setProductDtls({
@@ -137,7 +147,7 @@ const CreateProduct = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <Label label="Inventory" />
+                                <Label label="Stock" />
                                 <div className="relative">
                                     <FaLayerGroup className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                                     <Input
@@ -156,25 +166,21 @@ const CreateProduct = () => {
 
                         </div>
 
-                        {/* Image URL */}
+                        {/* Image Upload */}
                         <div className="space-y-2">
-                            <Label label="Visual Image Link" />
-                            <div className="relative">
-                                <FaImage className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                                <Input
-                                    type="text"
-                                    placeholder="https://..."
-                                    value={productDtls.image}
-                                    onChange={(e) =>
-                                        setProductDtls({ ...productDtls, image: e.target.value })
-                                    }
-                                />
-                            </div>
+                            <Label label="Product Image" />
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImageFile(e.target.files[0])}
+                                className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3"
+                            />
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-95 mt-4"
+                            className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-600 transition-all active:scale-95 mt-4"
                         >
                             Publish Product
                         </button>
@@ -184,6 +190,7 @@ const CreateProduct = () => {
 
                 {/* LIVE PREVIEW */}
                 <div className="hidden lg:sticky lg:top-32 lg:flex flex-col items-center">
+
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6">
                         Storefront Preview
                     </p>
@@ -191,15 +198,17 @@ const CreateProduct = () => {
                     <div className="w-full max-w-sm bg-white rounded-[2rem] border border-slate-100 shadow-2xl overflow-hidden scale-110">
 
                         <div className="h-64 bg-slate-50 flex items-center justify-center overflow-hidden">
-                            {productDtls.image ? (
+
+                            {imageFile ? (
                                 <img
-                                    src={productDtls.image}
+                                    src={URL.createObjectURL(imageFile)}
                                     className="w-full h-full object-cover"
                                     alt="Preview"
                                 />
                             ) : (
                                 <FaImage className="text-5xl text-slate-200" />
                             )}
+
                         </div>
 
                         <div className="p-6">
@@ -214,13 +223,14 @@ const CreateProduct = () => {
                             </div>
 
                             <p className="text-slate-400 text-sm line-clamp-2 h-10 mb-4">
-                                {productDtls.description || "No description provided yet."}
+                                {productDtls.description || "No description yet."}
                             </p>
 
                             <div className="flex justify-between items-center pt-4 border-t border-slate-50">
                                 <span className="text-2xl font-black text-slate-900">
-                                    ${productDtls.price || "0"}
+                                    ₹{productDtls.price || "0"}
                                 </span>
+
                                 <span className="text-xs font-bold text-slate-400">
                                     Stock: {productDtls.stock || "0"}
                                 </span>
@@ -229,6 +239,7 @@ const CreateProduct = () => {
                         </div>
 
                     </div>
+
                 </div>
 
             </div>
@@ -252,3 +263,4 @@ const Input = (props) => (
 );
 
 export default CreateProduct;
+
