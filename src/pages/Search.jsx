@@ -17,7 +17,6 @@ const Search = () => {
                         keyword: searchTerm
                     }
                 });
-                console.log(res.data);
                 setProducts(res.data);
             } catch (e) {
                 console.log("error in product fetch: ", e);

@@ -13,7 +13,7 @@ const AdminPanel = () => {
 
     useEffect(() => {
         api.get('/admin/users')
-            .then(res => { setUsers(res.data), console.log("users: ", res.data) })
+            .then(res => { setUsers(res.data)})
             .catch(e => console.log("error when get users: ", e))
 
         api.get('/admin/products')

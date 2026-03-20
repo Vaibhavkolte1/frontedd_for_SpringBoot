@@ -21,7 +21,6 @@ const ProductPage = () => {
     const getProduct = async () => {
       try {
         const res = await api.get(`/product/get/${productId}`);
-        console.log("Fetched product:", res.data);
         setProduct(res.data);
       } catch (e) {
         console.log("Error fetching product:", e);
@@ -35,7 +34,6 @@ const ProductPage = () => {
     if (!product) return;
     try {
       const res = await api.post('/cart/add-item', { productId: product.id, quantity });
-      console.log(res.data);
       setToast({ type: 'success', message: 'Product added to cart successfully!' });
 
       setRefresh(!refresh);
@@ -49,7 +47,6 @@ const ProductPage = () => {
     console.log("Submitting rating:", { id: product.id, ratings: rating });
     try {
       const res = await api.patch('/rating', { id: product.id, ratings: rating });
-      console.log(res.data);
       setToast({ type: 'success', message: 'Product rated successfully!' });
       setRefresh(!refresh);
     } catch (e) {

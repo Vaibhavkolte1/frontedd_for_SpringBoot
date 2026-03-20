@@ -40,8 +40,6 @@ const Login = () => {
 				{ withCredentials: true }
 			);
 
-			console.log('Login success:', res.data);
-
 			dispatch(setUser({ user: res.data, token: "fakeToken" }));
 
 			setEmail('');

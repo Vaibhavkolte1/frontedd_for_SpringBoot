@@ -28,13 +28,11 @@ const Register = () => {
                 address,
                 role: "USER"
             }).then((res) => {
-                console.log(res.data);
                 setname("");
                 setemail("");
                 setpassword("");
                 setAddress("");
             });
-            console.log(name, email, password, address);
 
             api.get('/auth/logout')
                     .then(responce => console.log("logout successfull", responce.data))

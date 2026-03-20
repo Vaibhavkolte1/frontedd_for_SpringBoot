@@ -54,7 +54,6 @@ const CreateProduct = () => {
                 }
             );
 
-            console.log(response.data);
             alert("Product created successfully!");
             navigate("/productmanage");
 

@@ -11,7 +11,7 @@ const OrderPage = () => {
     useEffect(() => {
         const getCart = async () => {
             await api.get('/order/get-all')
-                .then(res => { console.log(res.data.orderList); setProductList(res.data.orderList || []) })
+                .then(res => setProductList(res.data.orderList || []) )
                 .catch(e => console.log("error to fetch cart:", e))
         }
 

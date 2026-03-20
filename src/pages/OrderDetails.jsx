@@ -20,7 +20,7 @@ const OrderDetails = () => {
     useEffect(() => {
         const getOrderDetails = () => {
             api.get(`/order/get/${orderId}`)
-                .then(res => { console.log(res.data); setOrder(res.data) })
+                .then(res => setOrder(res.data) || {})
                 .catch(e => console.log("error to fetch product details:", e))
         }
 
@@ -35,7 +35,6 @@ const OrderDetails = () => {
 
         api.post("/order/payment", { orderId: order?.id, paymentMethod: paymentMethod })
             .then(res => {
-                console.log("Payment processed:", res.data);
                 alert("Payment successful!");
                 setTimeout(() => {
                     setRefresh(!refresh);
@@ -169,7 +168,6 @@ const OrderDetails = () => {
                                         {/* Pay Button */}
                                         <button
                                             onClick={() => {
-                                                console.log("Proceeding to payment for order:", order?.id);
                                                 handlePayment();
                                             }}
                                             className="w-full mt-4 py-4 bg-blue-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:bg-blue-700 transition-all active:scale-[0.98] flex items-center justify-center gap-3 group"
